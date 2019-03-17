@@ -1,3 +1,11 @@
+'''
+
+                            Online Python Compiler.
+                Code, Compile, Run and Debug python program online.
+Write your code in this editor and press "Run" button to execute it.
+
+'''
+
 from requests import get
 from bs4 import BeautifulSoup
 from lxml import html
@@ -40,13 +48,17 @@ for n in a.values():
         i+= 1
         t  = dates[i]
         conv_date = t[:10]
-        print(conv_date)
+        conv_time = t[12:19]
+        #print(conv_date)
+        #print(conv_time)
+        t2 = conv_date + " " + conv_time
+        print(t2)
         
         
 '''
-        datetime_obj = datetime.strptime(dates[i], "%Y-%m-%d %H:%M:%S")
+        datetime_obj = datetime.strptime(t2, "%Y-%m-%d %H:%M:%S")
         datetime_obj_ist = datetime_obj.replace(tzinfo=timezone('UTC'))
-        print (datetime_obj_utc.strftime("%Y-%m-%d %H:%M:%S %Z%z"))
+        print (datetime_obj_ist.strftime("%Y-%m-%d %H:%M:%S %Z%z"))
 '''
 
 
