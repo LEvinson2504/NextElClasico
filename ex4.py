@@ -1,15 +1,25 @@
-cars = 100
-space_in_car = 4.0
-drivers = 30
-passengers = 90
-cars_not_driven = cars - drivers
-cars_driven = drivers
-carpool_capacity = cars_driven + space_in_car
-average_passengers_per_car = passengers / cars_driven
+from requests import get
+from bs4 import BeautifulSoup
 
-print("There are ", cars, "cars available")
-print("There are only ",drivers, "drivers available")
-print("There will be",cars_not_driven, "empty cars today")
-print("we can transport ",carpool_capacity, "people today")
-print("we have",passengers,"to carpool today")
-print("we need to put about",average_passengers_per_car,"in each car")
+#target site
+url = "https://www.goal.com/en-in/team/real-madrid/fixtures-results/3kq9cckrnlogidldtdie2fkbl"
+
+#get data from site
+response = get(url)
+
+#print data
+print(response.status_code)
+
+#get raw html data
+match = BeautifulSoup(response.content, "html.parser")
+
+#view the html data
+#print(match.prettify)
+#match_div = match.findAll('div')
+#match_div = match.findAll('div', {"class":"match-data"})
+#match_div = match.findAll('div', {"class":"team-away win"})
+#match_div = match.find({"class":"team-name"})
+#match_div = match.findAll('div', {"class":"team-away win"})
+#opponent = match.find('span', {"class":"team-name"})
+#opponent = match.find('span', {"class":"team-away win"})
+opponent = match.findAll('span', {"class":"team-name"})
