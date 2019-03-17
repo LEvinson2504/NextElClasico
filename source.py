@@ -1,21 +1,53 @@
-import bs4
-from urllib.request import urlopen as uReq
-from bs4 import BeautifulSoup as soup
+from requests import get
+from bs4 import BeautifulSoup
+from lxml import html
+import datetime
+from datetime import datetime
+from pytz import timezone
 
-#target url
-my_url = 'https://www.goal.com/en-in/team/real-madrid/fixtures-results/3kq9cckrnlogidldtdie2fkbl'
+#target site
+url = "https://www.goal.com/en-in/team/real-madrid/fixtures-results/3kq9cckrnlogidldtdie2fkbl"
 
-#grap webpage, opening connection
-uClient = uReq(my_url)
+#get data from site
+response = get(url)
 
-#raw html
-page_html = uClient.read()
+#print status code
+#print(response.status_code)
 
-#close connection
-uClient.close()
+#get raw html data
+tree = html.fromstring(response.content)
 
-#html parsing
-page_soup = soup(page_html, "html.parser")
+#get the dates
+dates = tree.xpath("//a[@class='match-main-data-link']/div/span[not(text())]/../time")
+dates = [date.get('datetime') for date in dates]
 
-#graps the matches
-containers = page_soup.findAll("div", {"class":"match-data"})
+#get the teams
+teams = tree.xpath("//a[@class='match-main-data-link']/div/span[not(text())]/../../div/div/div/span[@class='team-name']")
+teams = [team.text for team in teams]
+
+#print(dates)
+#print(teams)
+
+a = dict(zip(dates, teams))
+#print(a)
+
+#using valencia as no el clasico fixtures this season
+team = "Valencia"
+i = 0
+for n in a.values():
+    if (n==team):
+        print(n)
+        i+= 1
+        t  = dates[i]
+        conv_date = t[:10]
+        print(conv_date)
+        
+        
+'''
+        datetime_obj = datetime.strptime(dates[i], "%Y-%m-%d %H:%M:%S")
+        datetime_obj_ist = datetime_obj.replace(tzinfo=timezone('UTC'))
+        print (datetime_obj_utc.strftime("%Y-%m-%d %H:%M:%S %Z%z"))
+'''
+
+
+
